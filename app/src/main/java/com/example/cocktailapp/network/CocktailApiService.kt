@@ -32,7 +32,6 @@ interface CocktailApiService {
 }
 
 object CocktailApi {
-    //val api: Any
     val retrofitService: CocktailApiService by lazy {
         retrofit.create(CocktailApiService::class.java)
     }
