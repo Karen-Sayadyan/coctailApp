@@ -11,13 +11,13 @@ import kotlinx.coroutines.launch
 
 class CocktailViewModel(private val cocktailRepository: CocktailRepository) : ViewModel() {
     private val _cocktail =
-        MutableStateFlow<Cocktail?>(Cocktail()) // приватная которую никто не может менять
+        MutableStateFlow<Cocktail>(Cocktail()) // приватная которую никто не может менять
     val cocktail = _cocktail.asStateFlow() // на это мы подписаны в экране
 
 
     fun getCocktail() {
         viewModelScope.launch {
-            val cocktail =  cocktailRepository.getCocktail().drinks?.firstOrNull() // прошу репозиторий отдать коктейль
+            val cocktail =  cocktailRepository.getCocktail().drinks?.firstOrNull() ?: Cocktail()  // прошу репозиторий отдать коктейль
             _cocktail.value = cocktail  // нашей переменной за которой следим на экране отдаем коктейль который отдал нам репозиторий
         }
 
