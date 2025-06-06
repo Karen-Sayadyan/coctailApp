@@ -16,9 +16,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.cocktailapp.ui.theme.Pink40
+import com.example.cocktailapp.viewModels.CocktailViewModel
 
 @Composable
 fun DrinkScreen(viewModel: CocktailViewModel) {
@@ -63,10 +63,4 @@ fun SearchButton(
             color = Color.White
         )
     }
-}
-
-@Preview
-@Composable
-fun AllSc() {
-    DrinkScreen(CocktailViewModel())
 }
