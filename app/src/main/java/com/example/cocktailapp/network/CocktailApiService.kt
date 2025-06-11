@@ -11,7 +11,7 @@ import retrofit2.http.GET
 private const val BASE_URL =
     "https://thecocktaildb.com/api/json/v1/1/"
 private val logging = HttpLoggingInterceptor().apply {
-    level = HttpLoggingInterceptor.Level.BODY // Установите уровень логирования
+    level = HttpLoggingInterceptor.Level.BODY
 }
 
 private val client = OkHttpClient.Builder()
