@@ -2,15 +2,17 @@ package com.example.cocktailapp.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
+val OrangePrimary = Color(0xFFFF9800)
 
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFFFF9800)
+// Светлая тема
+val LightPrimary = OrangePrimary
+val LightOnPrimary = Color(0xFFFFFFFF)  // Белый текст на оранжевом
+val LightSurface = Color(0xFFFFFBFE)    // Почти белый фон
+val LightOnSurface = Color(0xFF1C1B1F)  // Тёмно-серый текст
 
-
-
-
+// Тёмная тема
+val DarkPrimary = OrangePrimary
+val DarkOnPrimary = Color(0xFF1C1B1F)   // Тёмный текст на оранжевом
+val DarkSurface = Color(0xFF1C1B1F)     // Тёмно-серый фон
+val DarkOnSurface = Color(0xFFE6E1E5)   // Светло-серый текст
 
