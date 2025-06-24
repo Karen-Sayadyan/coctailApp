@@ -1,12 +1,14 @@
 package com.example.cocktailapp.screens.mainScreen
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -22,67 +24,126 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.example.cocktailapp.ui.theme.MyAppTypography
-import com.example.cocktailapp.model.Cocktail
+import com.example.cocktailapp.viewModels.CocktailViewModel
+
 
 @Composable
-fun CardView (
-    cocktail: Cocktail?,
+fun CardView(
+    state: CocktailViewModel.CocktailState,
+    onRetry: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val colorScheme = MaterialTheme.colorScheme
 
-    Card(
-        modifier = modifier
-            .padding(16.dp)
-            .fillMaxWidth(),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = colorScheme.surface,
-            contentColor = colorScheme.onSurface,
-
-        )
-    ) {
-        if (cocktail == null) {
-            CircularProgressIndicator(modifier = Modifier.fillMaxSize())
+    Box(
+        modifier = if (state is CocktailViewModel.CocktailState.Loading) {
+            Modifier.fillMaxWidth()
         } else {
-            Column(
-                modifier = Modifier.padding(16.dp).verticalScroll(rememberScrollState()),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
+            Modifier.fillMaxWidth()
+        },
+        contentAlignment = Alignment.Center
+    ) {
+        Card(
+            modifier = modifier
+                .padding(16.dp),
+            elevation = CardDefaults.cardElevation(if (state is CocktailViewModel.CocktailState.Loading) 0.dp else 4.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = if (state is CocktailViewModel.CocktailState.Loading) Color.Transparent else colorScheme.surface,
+                contentColor = colorScheme.onSurface,
+            )
+        ) {
+            when (state) {
+                is CocktailViewModel.CocktailState.Idle -> {
+                    // Обработка состояния Idle
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(200.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "Нажмите кнопку для загрузки коктейля",
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                }
 
-                Text(
-                    modifier = Modifier.padding(5.dp),
-                    text = cocktail.strDrink.orEmpty(),
-                    style = MyAppTypography.displayMedium,
-                    textAlign = TextAlign.Center
-                )
+                is CocktailViewModel.CocktailState.Loading -> {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(200.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator()
+                    }
+                }
 
-                AsyncImage(
-                    model = "https://lastfm.freetls.fastly.net/i/u/ar0/980a08d3d882bacd05b0b25951221e34.png",
-                    contentDescription = null,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(200.dp)
-                        .padding(8.dp),
-                    contentScale = ContentScale.Crop,
-                    placeholder = ColorPainter(Color.LightGray),
-                    error = ColorPainter(Color.Red.copy(alpha = 0.2f))
-                )
-                Text(
-                    modifier = Modifier.padding(start = 30.dp, end = 30.dp, top = 5.dp),
-                    text = cocktail.strInstructions.orEmpty(),
-                    textAlign = TextAlign.Center
-                )
-                Text(
-                    modifier = Modifier.padding(5.dp),
-                    text = cocktail.strAlcoholic.orEmpty(),
-                    textAlign = TextAlign.Center
-                )
-                Text(
-                    modifier = Modifier.padding(5.dp),
-                    text = cocktail.strGlass.orEmpty(),
-                    textAlign = TextAlign.Center
-                )
+                is CocktailViewModel.CocktailState.Error -> {
+                    Column(
+                        modifier = Modifier
+                            .padding(16.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        Text(
+                            text = state.message,
+                            color = MaterialTheme.colorScheme.error,
+                            modifier = Modifier.padding(16.dp)
+                        )
+                        Button(
+                            onClick = onRetry,
+                            modifier = Modifier.padding(16.dp)
+                        ) {
+                            Text("Повторить попытку")
+                        }
+                    }
+                }
+
+                is CocktailViewModel.CocktailState.Success -> {
+                    Column(
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .verticalScroll(rememberScrollState()),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+
+                        Text(
+                            modifier = Modifier.padding(5.dp),
+                            text = state.cocktail.strDrink.orEmpty(),
+                            style = MyAppTypography.displayMedium,
+                            textAlign = TextAlign.Center
+                        )
+
+                        AsyncImage(
+                            model = state.cocktail.strDrinkThumb.orEmpty(),
+                            //model = "https://lastfm.freetls.fastly.net/i/u/ar0/980a08d3d882bacd05b0b25951221e34.png",
+                            contentDescription = null,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                //.height(200.dp)
+                                .padding(8.dp),
+                            contentScale = ContentScale.Crop,
+                            placeholder = ColorPainter(Color.LightGray),
+                            error = ColorPainter(Color.Red.copy(alpha = 0.2f))
+                        )
+                        Text(
+                            modifier = Modifier.padding(start = 30.dp, end = 30.dp, top = 5.dp),
+                            text = state.cocktail.strInstructions.orEmpty(),
+                            textAlign = TextAlign.Center
+                        )
+                        Text(
+                            modifier = Modifier.padding(5.dp),
+                            text = state.cocktail.strAlcoholic.orEmpty(),
+                            textAlign = TextAlign.Center
+                        )
+                        Text(
+                            modifier = Modifier.padding(5.dp),
+                            text = state.cocktail.strGlass.orEmpty(),
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                }
             }
         }
     }
