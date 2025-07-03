@@ -36,7 +36,6 @@ class MainActivity : ComponentActivity() {
                             LandingScreen(
                                 onStartClick = { viewModel.loadCocktail() },
                                 modifier = Modifier.padding(padding),
-                                viewModel = viewModel
                             )
                         } else {
                             CocktailScreen(

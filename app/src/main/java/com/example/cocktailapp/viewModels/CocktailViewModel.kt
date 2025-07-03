@@ -8,6 +8,7 @@ import com.example.cocktailapp.model.LandingScreenRepository
 import com.example.cocktailapp.repository.CocktailRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -31,7 +32,7 @@ class CocktailViewModel @Inject constructor(
         data class Success(val landings: List<LandingItem>) : LandingState()
     }
 
-    private val _cocktailState = MutableStateFlow<CocktailState>(CocktailState.Idle)
+    private val _cocktailState = MutableStateFlow<CocktailState>(CocktailState.Idle) //
     val cocktailState = _cocktailState.asStateFlow()
 
     private val _landingState = MutableStateFlow<LandingState>(LandingState.Success(
@@ -43,9 +44,10 @@ class CocktailViewModel @Inject constructor(
 
     fun loadCocktail() {
         _showLandings.value = false
-        _cocktailState.value = CocktailState.Loading
         viewModelScope.launch(Dispatchers.IO) {
             try {
+                _cocktailState.value = CocktailState.Loading
+                delay(1000) // Задержка 1 сек для демонстрации
                 val response = cocktailRepository.getCocktail()
                 val cocktail = response.drinks?.firstOrNull() ?: throw Exception("No cocktails found")
                 _cocktailState.value = CocktailState.Success(cocktail)
@@ -57,6 +59,6 @@ class CocktailViewModel @Inject constructor(
 
     fun showLandings() {
         _showLandings.value = true
-        _cocktailState.value = CocktailState.Idle
+        _cocktailState.value = CocktailState.Idle //
     }
 }

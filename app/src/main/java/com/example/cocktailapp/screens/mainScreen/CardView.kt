@@ -3,8 +3,9 @@ package com.example.cocktailapp.screens.mainScreen
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -58,7 +59,8 @@ fun CardView(
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(200.dp),
+                            //.height(200.dp),
+                            .heightIn(min = 100.dp), // мин высота высота
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
@@ -72,7 +74,8 @@ fun CardView(
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(200.dp),
+                            //.height(200.dp),
+                            .heightIn(min = 100.dp), // мин высота высота
                         contentAlignment = Alignment.Center
                     ) {
                         CircularProgressIndicator()
@@ -122,6 +125,7 @@ fun CardView(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 //.height(200.dp)
+                                .aspectRatio(1f) // Соотношение сторон 1:1 для изображения
                                 .padding(8.dp),
                             contentScale = ContentScale.Crop,
                             placeholder = ColorPainter(Color.LightGray),
