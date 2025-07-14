@@ -1,4 +1,4 @@
-package com.example.cocktailapp.ui.theme
+package com.example.cocktailapp.appMaterialTheme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

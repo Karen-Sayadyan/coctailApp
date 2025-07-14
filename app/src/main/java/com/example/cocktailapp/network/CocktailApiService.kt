@@ -1,6 +1,6 @@
 package com.example.cocktailapp.network
 
-import com.example.cocktailapp.model.DrinkResponse
+import com.example.cocktailapp.cocktailModule.model.CocktailResponse
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -65,5 +65,5 @@ object NetworkModule {
 
 interface CocktailApiService {
     @GET("random.php")
-    suspend fun getRandomDrink(): DrinkResponse
+    suspend fun getRandomCocktail(): CocktailResponse
 }

@@ -1,7 +1,7 @@
 package com.example.cocktailapp.repository
 
-import com.example.cocktailapp.model.DrinkResponse
+import com.example.cocktailapp.cocktailModule.model.CocktailResponse
 
 interface CocktailRepository {
-    suspend fun getCocktail(): DrinkResponse
+    suspend fun getCocktail(): CocktailResponse
 }

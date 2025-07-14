@@ -1,4 +1,4 @@
-package com.example.cocktailapp.screens.mainScreen
+package com.example.cocktailapp.cocktailModule.screens
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,21 +22,25 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.cocktailapp.viewModels.CocktailViewModel
+import com.example.cocktailapp.cocktailModule.events.CocktailEvents
+import com.example.cocktailapp.cocktailModule.component.CocktailComponent
+import com.example.cocktailapp.cocktailModule.viewModel.CocktailViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CocktailScreen(
     viewModel: CocktailViewModel,
-    onBackClick: () -> Unit,
+    component: CocktailComponent,
     modifier: Modifier = Modifier
 ) {
     val state by viewModel.cocktailState.collectAsState()
 
-    Box(modifier = modifier.fillMaxSize()) {
+    Box(
+        modifier = modifier.fillMaxSize()
+    ) {
         PullToRefreshBox(
-            isRefreshing = state is CocktailViewModel.CocktailState.Loading,
-            onRefresh = viewModel::loadCocktail,
+            isRefreshing = state is CocktailViewModel.CocktailState.LoadingPullToRefresh,
+            onRefresh = viewModel::loadCocktailFromPullToRefresh,
             modifier = Modifier.fillMaxSize()
         ) {
             Column(
@@ -45,38 +49,33 @@ fun CocktailScreen(
                     .padding(bottom = 80.dp)
             ) {
                 IconButton(
-                    onClick = onBackClick,
+                    onClick = { component.toLandingScreen(event = CocktailEvents.backToLanding) },
                     modifier = Modifier.padding(12.dp)
                 ) {
-                    Icon(Icons.AutoMirrored.Filled.ArrowBack, "Назад")
+                    Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                 }
 
                 when (state) {
                     is CocktailViewModel.CocktailState.Idle -> {
-                        Box(
-                            modifier = Modifier.fillMaxSize(),
-                            contentAlignment = Alignment.Center,
-                        ) {
-                            Text("Нажмите кнопку для загрузки коктейля")
-                        }
+                        IdleCard()
                     }
-                    is CocktailViewModel.CocktailState.Loading -> {}
+
+                    is CocktailViewModel.CocktailState.LoadingButton -> {
+                        LoadingCardButton()
+                    }
+
+                    is CocktailViewModel.CocktailState.LoadingPullToRefresh -> {
+                        LoadingCardPullToRefresh()
+                    }
+
                     is CocktailViewModel.CocktailState.Error -> {
-                        CardView(
-                            state = state,
-                            onRetry = { viewModel.loadCocktail() },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 16.dp)
-                        )
+                        ErrorCard()
                     }
+
                     is CocktailViewModel.CocktailState.Success -> {
-                        CardView(
-                            state = state,
-                            onRetry = { viewModel.loadCocktail() },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 16.dp)
+                        val cocktail = (state as CocktailViewModel.CocktailState.Success).cocktail
+                        SuccessCard(
+                            cocktail = cocktail
                         )
                     }
                 }
@@ -91,6 +90,7 @@ fun CocktailScreen(
         ) {
             SearchButton(
                 onClick = { viewModel.loadCocktail() },
+                isLoading = state is CocktailViewModel.CocktailState.LoadingButton,
                 modifier = Modifier.align(Alignment.Center)
             )
         }
@@ -100,6 +100,7 @@ fun CocktailScreen(
 @Composable
 fun SearchButton(
     onClick: () -> Unit,
+    isLoading: Boolean,
     modifier: Modifier = Modifier
 ) {
     Button(
@@ -108,13 +109,16 @@ fun SearchButton(
             .fillMaxWidth()
             .padding(horizontal = 30.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.colorScheme.primary,
-            contentColor = MaterialTheme.colorScheme.onPrimary
+            containerColor = if (isLoading) MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
+            else MaterialTheme.colorScheme.primary,
+            contentColor = if (isLoading) MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+            else MaterialTheme.colorScheme.onPrimary
         ),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(12.dp),
+        enabled = !isLoading
     ) {
         Text(
-            text = "Получить случайный коктейль",
+            text = if (isLoading) "Загрузка..." else "Получить случайный коктейль",
             style = MaterialTheme.typography.labelLarge
         )
     }

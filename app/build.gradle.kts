@@ -4,13 +4,14 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.serializable)
     id("kotlin-parcelize")
     id("kotlin-kapt")
 }
 
 android {
     namespace = "com.example.cocktailapp"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.example.cocktailapp"
@@ -79,4 +80,9 @@ dependencies {
     implementation(libs.accompanist.pager)
     implementation(libs.accompanist.pager.indicators)
     implementation(libs.cronet.embedded.v108535979)
+    implementation(libs.decompose)
+    implementation(libs.androidx.foundation)
+    implementation(libs.ui)
+    implementation(libs.decompose.jetbrains)
+
 }
