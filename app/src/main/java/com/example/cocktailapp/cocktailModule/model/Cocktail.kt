@@ -1,6 +1,6 @@
-package com.example.cocktailapp.model
+package com.example.cocktailapp.cocktailModule.model
 
-data class DrinkResponse(
+data class CocktailResponse(
     val drinks: List<Cocktail>?
 )
 

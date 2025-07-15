@@ -1,4 +1,4 @@
-package com.example.cocktailapp.ui.theme
+package com.example.cocktailapp.appMaterialTheme
 
 import androidx.compose.ui.graphics.Color
 
