@@ -1,7 +1,7 @@
 package com.example.cocktailapp.cocktailModule.model
 
 data class CocktailResponse(
-    val drinks: List<Cocktail>?
+    val drinks: List<Cocktail>
 )
 
 data class Cocktail(

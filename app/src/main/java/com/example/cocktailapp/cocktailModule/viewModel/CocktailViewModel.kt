@@ -19,25 +19,23 @@ class CocktailViewModel @Inject constructor(
 ) : ViewModel() {
 
     sealed class CocktailState {
-        object Idle : CocktailState()
         object LoadingButton : CocktailState() // Состояние для загрузки по кнопке
         object LoadingPullToRefresh : CocktailState() // Состояние для загрузки от Pull to Refresh
         data class Error(val message: String) : CocktailState()
         data class Success(val cocktail: Cocktail) : CocktailState()
     }
 
-    private val _cocktailState = MutableStateFlow<CocktailState>(CocktailState.Idle)
+    private val _cocktailState = MutableStateFlow<CocktailState>(CocktailState.LoadingButton)
     val cocktailState = _cocktailState.asStateFlow()
 
     fun loadCocktail() {
-        if (_cocktailState.value is CocktailState.LoadingButton) return
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 _cocktailState.value = CocktailState.LoadingButton
                 delay(1000) // Задержка для демонстрации
                 val response = cocktailRepository.getCocktail()
                 val cocktail =
-                    response.drinks?.firstOrNull() ?: throw Exception("No cocktails found")
+                    response ?: throw Exception("No cocktails found")
                 _cocktailState.value = CocktailState.Success(cocktail)
             } catch (e: Exception) {
                 _cocktailState.value = CocktailState.Error(e.localizedMessage ?: "Unknown error")
@@ -53,7 +51,7 @@ class CocktailViewModel @Inject constructor(
                 delay(1000) // Задержка для демонстрации
                 val response = cocktailRepository.getCocktail()
                 val cocktail =
-                    response.drinks?.firstOrNull() ?: throw Exception("No cocktails found")
+                    response ?: throw Exception("No cocktails found")
                 _cocktailState.value = CocktailState.Success(cocktail)
             } catch (e: Exception) {
                 _cocktailState.value = CocktailState.Error(e.localizedMessage ?: "Unknown error")

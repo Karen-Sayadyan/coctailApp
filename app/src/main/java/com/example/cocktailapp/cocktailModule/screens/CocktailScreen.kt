@@ -16,9 +16,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -34,13 +32,21 @@ fun CocktailScreen(
     modifier: Modifier = Modifier
 ) {
     val state by viewModel.cocktailState.collectAsState()
+    var isSwiping by remember { mutableStateOf(false) }
+
+    LaunchedEffect(Unit) {
+        viewModel.loadCocktail()
+    }
 
     Box(
         modifier = modifier.fillMaxSize()
     ) {
         PullToRefreshBox(
             isRefreshing = state is CocktailViewModel.CocktailState.LoadingPullToRefresh,
-            onRefresh = viewModel::loadCocktailFromPullToRefresh,
+            onRefresh = {
+                isSwiping = true
+                viewModel.loadCocktailFromPullToRefresh()
+            },
             modifier = Modifier.fillMaxSize()
         ) {
             Column(
@@ -49,16 +55,15 @@ fun CocktailScreen(
                     .padding(bottom = 80.dp)
             ) {
                 IconButton(
-                    onClick = { component.toLandingScreen(event = CocktailEvents.backToLanding) },
+                    onClick = {
+                        component.toLandingScreen(event = CocktailEvents.BackToLanding)
+                    },
                     modifier = Modifier.padding(12.dp)
                 ) {
                     Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                 }
 
                 when (state) {
-                    is CocktailViewModel.CocktailState.Idle -> {
-                        IdleCard()
-                    }
 
                     is CocktailViewModel.CocktailState.LoadingButton -> {
                         LoadingCardButton()
@@ -79,6 +84,13 @@ fun CocktailScreen(
                         )
                     }
                 }
+
+//                 Сброс isSwiping после завершения обновления
+                LaunchedEffect(state) {
+                    if (state !is CocktailViewModel.CocktailState.LoadingPullToRefresh) {
+                        isSwiping = false
+                    }
+                }
             }
         }
 
@@ -90,7 +102,7 @@ fun CocktailScreen(
         ) {
             SearchButton(
                 onClick = { viewModel.loadCocktail() },
-                isLoading = state is CocktailViewModel.CocktailState.LoadingButton,
+                isLoading = state is CocktailViewModel.CocktailState.LoadingButton || isSwiping,
                 modifier = Modifier.align(Alignment.Center)
             )
         }

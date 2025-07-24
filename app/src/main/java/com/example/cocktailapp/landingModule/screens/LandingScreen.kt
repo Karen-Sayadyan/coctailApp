@@ -41,7 +41,6 @@ fun LandingScreen(
     component: LandingComponent,
     modifier: Modifier = Modifier
 ) {
-
     val pagerState = rememberPagerState(pageCount = { LandingScreenRepository.landingScreens.size }) // вот это нужно убрать во вьюмодель
                                                                                                     // эта логика должна быть во вьюмодели)
     var currentPage by remember { mutableIntStateOf(0) }
@@ -95,7 +94,7 @@ fun LandingScreen(
 
         // Кнопка перехода к коктейлям
         Button(
-            onClick = {component.toCocktailScreen(event = LandingEvents.GoToCocktail) },
+            onClick = { component.toCocktailScreen(event = LandingEvents.GoToCocktailHistory) },
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .padding(bottom = 32.dp)

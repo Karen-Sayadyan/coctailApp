@@ -28,19 +28,6 @@ import com.example.cocktailapp.appMaterialTheme.MyAppTypography
 import com.example.cocktailapp.cocktailModule.model.Cocktail
 
 
-@Composable
-fun IdleCard() {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = "Нажмите кнопку для загрузки коктейля",
-            textAlign = TextAlign.Center,
-            style = MyAppTypography.displayMedium
-        )
-    }
-}
 
 @Composable
 fun LoadingCardButton() {

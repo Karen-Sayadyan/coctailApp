@@ -11,11 +11,13 @@ import com.example.cocktailapp.cocktailModule.screens.CocktailScreen
 import com.example.cocktailapp.landingModule.screens.LandingScreen
 import com.example.cocktailapp.rootComponent.RootComponent
 import com.example.cocktailapp.appMaterialTheme.CocktailAppTheme
+import com.example.cocktailapp.HistoryModule.screens.HistoryScreen
+import com.example.cocktailapp.HistoryModule.viewModel.HistoryViewModel
 import com.example.cocktailapp.cocktailModule.viewModel.CocktailViewModel
 
 
 @Composable
-fun MainAppScreen(root: RootComponent, viewModel: CocktailViewModel,) {
+fun MainAppScreen(root: RootComponent, viewModel: CocktailViewModel, historyViewModel: HistoryViewModel) {
     val childStack by root.childStack.subscribeAsState()
     CocktailAppTheme {
         Scaffold(
@@ -32,6 +34,11 @@ fun MainAppScreen(root: RootComponent, viewModel: CocktailViewModel,) {
                         is RootComponent.Child.CocktailScreen -> CocktailScreen(
                             viewModel = viewModel,
                             modifier = Modifier.padding(padding),
+                            component = instance.component
+                        )
+
+                        is RootComponent.Child.HistoryScreen -> HistoryScreen(
+                            viewModel = historyViewModel,
                             component = instance.component
                         )
                     }

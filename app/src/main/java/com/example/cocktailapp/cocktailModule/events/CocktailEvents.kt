@@ -1,5 +1,5 @@
 package com.example.cocktailapp.cocktailModule.events
 
 sealed interface CocktailEvents {
-    data object backToLanding : CocktailEvents
+    data object BackToLanding : CocktailEvents
 }

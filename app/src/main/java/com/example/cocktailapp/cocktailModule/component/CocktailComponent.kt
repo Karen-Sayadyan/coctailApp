@@ -7,9 +7,9 @@ class CocktailComponent(
     componentContext : ComponentContext,
     private val onGoback: () -> Unit
 ) : ComponentContext by componentContext {
-    fun toLandingScreen(event: CocktailEvents.backToLanding) {
+    fun toLandingScreen(event: CocktailEvents.BackToLanding) {
         when (event) {
-            is CocktailEvents.backToLanding -> {
+            is CocktailEvents.BackToLanding -> {
                 onGoback()
             }
         }

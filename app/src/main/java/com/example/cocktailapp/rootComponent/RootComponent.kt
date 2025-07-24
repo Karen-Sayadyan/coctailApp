@@ -5,6 +5,7 @@ import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.pushNew
+import com.example.cocktailapp.HistoryModule.component.HistoryComponent
 import com.example.cocktailapp.cocktailModule.component.CocktailComponent
 import com.example.cocktailapp.landingModule.component.LandingComponent
 import kotlinx.serialization.Serializable
@@ -24,21 +25,34 @@ class RootComponent(
     private fun createChild(
         config: Configuration,
         context: ComponentContext
-    ) : Child {
-       return when(config) {
+    ): Child {
+        return when (config) {
             Configuration.LandingScreen -> Child.LandingScreen(
                 component = LandingComponent(
                     context,
                     onCocktailNavigation = {
-                        navigation.pushNew(Configuration.CocktailScreen)
+                        navigation.pushNew(Configuration.HistoryScreen)
                     }
                 )
             )
+
             Configuration.CocktailScreen -> Child.CocktailScreen(
                 component = CocktailComponent(
                     context,
                     onGoback = {
                         navigation.pop()
+                    }
+                )
+            )
+
+            Configuration.HistoryScreen -> Child.HistoryScreen(
+                component = HistoryComponent(
+                    context,
+                    onGoback = {
+                        navigation.pop()
+                    },
+                    onCocktailNavigation = {
+                        navigation.pushNew(Configuration.CocktailScreen)
                     }
                 )
             )
@@ -48,8 +62,8 @@ class RootComponent(
     sealed class Child {
         class LandingScreen(val component: LandingComponent) : Child()
         class CocktailScreen(val component: CocktailComponent) : Child()
+        class HistoryScreen(val component: HistoryComponent) : Child()
     }
-
 
     @Serializable
     sealed class Configuration {
@@ -59,6 +73,8 @@ class RootComponent(
         @Serializable
         data object CocktailScreen : Configuration()
 
+        @Serializable
+        data object HistoryScreen : Configuration()
     }
 
 }
