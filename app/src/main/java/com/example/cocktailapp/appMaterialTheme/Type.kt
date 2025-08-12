@@ -17,8 +17,14 @@ val MyAppTypography = Typography(
     displayMedium = TextStyle(
         fontFamily = Savate,
         fontWeight = FontWeight.Bold,
-        fontSize = 24.sp
+        fontSize = 28.sp
+    ),
+    displaySmall = TextStyle(
+        fontFamily = Savate,
+        fontWeight = FontWeight.Bold,
+        fontSize = 16.sp
     )
+
 )
 
 

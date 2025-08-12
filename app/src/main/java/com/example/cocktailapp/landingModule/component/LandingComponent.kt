@@ -8,9 +8,9 @@ class LandingComponent(
     private val onCocktailNavigation: () -> Unit
 
 ) : ComponentContext by componentContext {
-    fun toCocktailScreen(event: LandingEvents.GoToCocktail) {
+    fun toCocktailScreen(event: LandingEvents.GoToCocktailHistory) {
         when (event) {
-            is LandingEvents.GoToCocktail -> {
+            is LandingEvents.GoToCocktailHistory -> {
                 onCocktailNavigation()
             }
         }
