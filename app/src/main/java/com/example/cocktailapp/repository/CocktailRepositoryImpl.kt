@@ -3,6 +3,7 @@ package com.example.cocktailapp.repository
 import com.example.cocktailapp.cocktailModule.model.Cocktail
 import com.example.cocktailapp.data.CocktailItemDao
 import com.example.cocktailapp.di.network.NetworkModule
+import com.example.cocktailapp.utils.mapFromBd
 import com.example.cocktailapp.utils.mapToBd
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -14,8 +15,13 @@ class CocktailRepositoryImpl @Inject constructor(
     private val dao: CocktailItemDao
 ) : CocktailRepository {
     override suspend fun getCocktail(): Cocktail? = withContext(Dispatchers.IO) {
-        val cocktail = networkManager.getRandomCocktail().drinks?.firstOrNull()
+        val cocktail = networkManager.getRandomCocktail().drinks.firstOrNull()
         cocktail?.let { dao.insert(it.mapToBd()) }
+        return@withContext cocktail
+    }
+
+    override suspend fun getCocktailById(id: Int): Cocktail? = withContext(Dispatchers.IO) {
+        val cocktail = dao.getCocktailById(id)?.mapFromBd()
         return@withContext cocktail
     }
 }

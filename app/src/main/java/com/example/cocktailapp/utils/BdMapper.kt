@@ -9,7 +9,8 @@ fun Cocktail.mapToBd(): CocktailItem {
         strDrink = this.strDrink,
         strAlcoholic = this.strAlcoholic,
         strInstructions = this.strInstructions,
-        image = this.strDrinkThumb
+        image = this.strDrinkThumb,
+        isFavorite = false
     )
 }
 
@@ -19,6 +20,7 @@ fun CocktailItem.mapFromBd() : Cocktail {
         strDrink = this.strDrink,
         strAlcoholic = this.strAlcoholic,
         strInstructions = this.strInstructions,
-        strDrinkThumb = this.image
+        strDrinkThumb = this.image,
+        isFavorite = this.isFavorite
     )
 }

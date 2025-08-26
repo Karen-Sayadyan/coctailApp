@@ -20,8 +20,17 @@ interface CocktailItemDao {
     suspend fun delete(cocktailItem: CocktailItem)
 
     @Query("SELECT * from cocktails WHERE idDrink = :id")
-    fun getCocktailById(id: Int): CocktailItem
+    fun getCocktailById(id: Int): CocktailItem?
 
     @Query("SELECT * from cocktails")
     fun getAllCocktailItems(): List<CocktailItem>
+
+    @Query("UPDATE cocktails SET isFavorite = 1 WHERE idDrink = :id")
+    suspend fun adToFavorite(id: Int) : Int
+
+    @Query("UPDATE cocktails SET isFavorite = 0 WHERE idDrink = :id")
+    suspend fun removeFromFavorite(id: Int) : Int
+
+    @Query("SELECT * from cocktails WHERE isFavorite = 1 ")
+    fun getAllFavorites(): List<CocktailItem?>
 }

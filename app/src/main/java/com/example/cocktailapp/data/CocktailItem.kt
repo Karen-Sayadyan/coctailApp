@@ -10,5 +10,6 @@ data class CocktailItem(
     val strDrink: String?,
     val strAlcoholic: String?,
     val strInstructions: String?,
-    val image: String?
+    val image: String?,
+    val isFavorite: Boolean
 )

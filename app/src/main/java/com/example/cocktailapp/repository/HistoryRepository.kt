@@ -2,6 +2,6 @@ package com.example.cocktailapp.repository
 
 import com.example.cocktailapp.cocktailModule.model.CocktailResponse
 
-interface CocktailsHistoryRepository {
+interface HistoryRepository {
     suspend fun getCocktailsHistory() : CocktailResponse
 }

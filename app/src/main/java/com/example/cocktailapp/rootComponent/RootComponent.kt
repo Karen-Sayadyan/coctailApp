@@ -2,12 +2,13 @@ package com.example.cocktailapp.rootComponent
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.StackNavigation
+import com.arkivanov.decompose.router.stack.bringToFront
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.pushNew
+import com.example.cocktailapp.FavoriteModule.component.FavoriteComponent
 import com.example.cocktailapp.HistoryModule.component.HistoryComponent
 import com.example.cocktailapp.cocktailModule.component.CocktailComponent
-import com.example.cocktailapp.landingModule.component.LandingComponent
 import kotlinx.serialization.Serializable
 
 class RootComponent(
@@ -17,22 +18,23 @@ class RootComponent(
     val childStack = childStack(
         source = navigation,
         serializer = Configuration.serializer(),
-        initialConfiguration = Configuration.LandingScreen,
+        initialConfiguration = Configuration.CocktailScreen,
         handleBackButton = true,
         childFactory = ::createChild
     )
 
+    init {
+        // Явно инициализируем первый экран
+        navigation.bringToFront(Configuration.CocktailScreen)
+    }
     private fun createChild(
         config: Configuration,
         context: ComponentContext
     ): Child {
         return when (config) {
-            Configuration.LandingScreen -> Child.LandingScreen(
-                component = LandingComponent(
-                    context,
-                    onCocktailNavigation = {
-                        navigation.pushNew(Configuration.HistoryScreen)
-                    }
+            Configuration.FavoriteScreen -> Child.FavoriteScreen(
+                component = FavoriteComponent(
+                    context
                 )
             )
 
@@ -59,22 +61,29 @@ class RootComponent(
         }
     }
 
+    fun onTabSelected(config: Configuration) {
+        navigation.bringToFront(config)
+    }
+
     sealed class Child {
-        class LandingScreen(val component: LandingComponent) : Child()
         class CocktailScreen(val component: CocktailComponent) : Child()
         class HistoryScreen(val component: HistoryComponent) : Child()
+
+        class FavoriteScreen(val component: FavoriteComponent) : Child()
+
+
     }
 
     @Serializable
     sealed class Configuration {
         @Serializable
-        data object LandingScreen : Configuration()
-
-        @Serializable
         data object CocktailScreen : Configuration()
 
         @Serializable
         data object HistoryScreen : Configuration()
+
+        @Serializable
+        data object FavoriteScreen : Configuration()
     }
 
 }

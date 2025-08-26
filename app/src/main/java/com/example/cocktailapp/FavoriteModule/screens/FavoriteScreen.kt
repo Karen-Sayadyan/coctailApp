@@ -1,11 +1,9 @@
-package com.example.cocktailapp.HistoryModule.screens
-
+package com.example.cocktailapp.FavoriteModule.screens
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -15,22 +13,22 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.cocktailapp.HistoryModule.component.HistoryComponent
-import com.example.cocktailapp.HistoryModule.viewModel.HistoryViewModel
+import com.example.cocktailapp.FavoriteModule.component.FavoriteComponent
+import com.example.cocktailapp.FavoriteModule.viewModel.FavoriteViewModel
+import com.example.cocktailapp.HistoryModule.screens.LoadingScreen
 import com.example.cocktailapp.cocktailModule.screens.ErrorCard
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HistoryScreen(
-    component: HistoryComponent,
-    viewModel: HistoryViewModel,
+fun FavoriteScreen(
+    component: FavoriteComponent,
+    viewModel: FavoriteViewModel,
     modifier: Modifier = Modifier
 ) {
     val state by viewModel.cocktailState.collectAsState()
 
     LaunchedEffect(Unit) {
-        viewModel.loadHistory()
+        viewModel.loadFavorite()
     }
     Box(
         modifier = modifier
@@ -41,23 +39,25 @@ fun HistoryScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "History",
+                text = "Favorites",
                 style = MaterialTheme.typography.displayMedium,
             )
             when (state) {
-                is HistoryViewModel.CocktailState.Loading -> {
+                is FavoriteViewModel.CocktailState.Loading -> {
                     LoadingScreen()
                 }
 
-                is HistoryViewModel.CocktailState.Empty -> {
+                is FavoriteViewModel.CocktailState.Empty -> {
                     ErrorCard()
                 }
 
-                is HistoryViewModel.CocktailState.Success -> {
+                is FavoriteViewModel.CocktailState.Success -> {
                     val cocktails =
-                        (state as HistoryViewModel.CocktailState.Success).cocktails.drinks
-                    HistoryListScreen(
+                        (state as FavoriteViewModel.CocktailState.Success).cocktails.drinks
+                    FavoritesListScreen(
                         cocktails = cocktails,
+                        onRemove = {
+                            viewModel.deleteCocktailFromFavorites(it)},
                         modifier = Modifier
                             .weight(1f)
                             .padding(bottom = 16.dp)

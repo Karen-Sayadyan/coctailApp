@@ -5,9 +5,9 @@ import com.example.cocktailapp.data.CocktailItemDao
 import com.example.cocktailapp.utils.mapFromBd
 import jakarta.inject.Inject
 
-class CocktailsHistoryRepositoryImpl @Inject constructor (
+class HistoryRepositoryImpl @Inject constructor (
     private val dao: CocktailItemDao
-) : CocktailsHistoryRepository {
+) : HistoryRepository {
     override suspend fun getCocktailsHistory(): CocktailResponse {
         val cocktails = dao.getAllCocktailItems()
         val responseCocktails = cocktails.map { it.mapFromBd() }

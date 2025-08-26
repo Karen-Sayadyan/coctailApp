@@ -15,5 +15,9 @@ interface RepositoryModule {
 
     @Binds
     @Singleton
-    fun bindCocktailsHistoryRepository(impl: CocktailsHistoryRepositoryImpl): CocktailsHistoryRepository
+    fun bindCocktailsHistoryRepository(impl: HistoryRepositoryImpl): HistoryRepository
+
+    @Binds
+    @Singleton
+    fun bindFavoriteRepository(impl: FavoriteRepositoryImpl): FavoriteRepository
 }
