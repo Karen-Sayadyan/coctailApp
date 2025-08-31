@@ -1,6 +1,5 @@
 package com.example.cocktailapp.cocktailModule.screens
 
-//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -92,8 +91,6 @@ fun SuccessCard(
             Box(
                 modifier = Modifier.fillMaxWidth(),
                 contentAlignment = Alignment.Center
-//                horizontalArrangement = Arrangement.SpaceBetween,
-//                verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
                     modifier = Modifier.padding(5.dp),
@@ -103,7 +100,6 @@ fun SuccessCard(
                 )
 
             }
-
             Box {
                 AsyncImage(
                     model = cocktail.strDrinkThumb.orEmpty(),
@@ -116,7 +112,7 @@ fun SuccessCard(
                     placeholder = ColorPainter(Color.LightGray),
                     error = ColorPainter(Color.Red.copy(alpha = 0.2f))
                 )
-                Icon( // иконка умеет отрисовываться если isFavorite
+                Icon(
                     imageVector = if (cocktail.isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
                     contentDescription = "",
                     modifier = Modifier

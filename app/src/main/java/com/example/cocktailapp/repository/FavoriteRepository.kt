@@ -1,9 +1,10 @@
 package com.example.cocktailapp.repository
 
 import com.example.cocktailapp.cocktailModule.model.CocktailResponse
+import kotlinx.coroutines.flow.Flow
 
 interface FavoriteRepository {
     suspend fun addToFavorite(id: Int): Boolean
     suspend fun removeFromFavorite(id: Int): Boolean
-    suspend fun getAllFavorites(): CocktailResponse
+    fun getAllFavorites(): Flow<CocktailResponse>
 }

@@ -44,7 +44,8 @@ fun FavoritesListScreen(
 ) {
     LazyColumn(modifier = modifier) {
         items(cocktails) { cocktail ->
-            FavoriteItem(cocktail = cocktail, onRemove = { onRemove(cocktail.idDrink) })
+            FavoriteItem(cocktail = cocktail,
+                onRemove = { onRemove(cocktail.idDrink) })
         }
     }
 }
@@ -56,48 +57,37 @@ fun FavoriteItem(
     onRemove: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-// 1. Создаем состояние для свайпа (только удаление)
     val swipeToDismissBoxState = rememberSwipeToDismissBoxState(
         confirmValueChange = { dismissDirection ->
-// 2. Если свайпнули влево - удаляем задачу
             if (dismissDirection == SwipeToDismissBoxValue.EndToStart) {
                 onRemove()
             }
-// 3. Всегда сбрасываем анимацию после действия
             false
         }
     )
     SwipeToDismissBox(
-        state = swipeToDismissBoxState, // передаем состояние свайпа
-        modifier = modifier.fillMaxSize(), // растягиваем на всю ширину
-// 5. Фон, который показывается при свайпе
+        state = swipeToDismissBoxState,
+        modifier = modifier.fillMaxSize(),
         backgroundContent = {
-// 6. Проверяем направление свайпа
             when (swipeToDismissBoxState.dismissDirection) {
-// 7. Свайп слева направо (удаление)
                 SwipeToDismissBoxValue.EndToStart -> {
-// 8. Показываем иконку корзины
                     Icon(
-                        imageVector = Icons.Default.Delete, // иконка удаления
-                        contentDescription = "Удалить задачу", // описание для accessibility
+                        imageVector = Icons.Default.Delete,
+                        contentDescription = "Удалить задачу",
                         modifier = Modifier
-                            .fillMaxSize() // растягиваем на весь размер
-// 9. Плавно меняем фон от серого к красному
+                            .fillMaxSize()
                             .background(
                                 lerp(
-                                    Color.LightGray, // начальный цвет
-                                    Color.Red, // конечный цвет
-                                    swipeToDismissBoxState.progress // прогресс свайпа (0.0 до 1.0)
+                                    Color.LightGray,
+                                    Color.Red,
+                                    swipeToDismissBoxState.progress
                                 )
                             )
-// 10. Выравниваем иконку по правому краю
                             .wrapContentSize(Alignment.CenterEnd)
-// 11. Добавляем отступы вокруг иконки
                             .padding(16.dp),
                         tint = Color.White // белый цвет иконки
                     )
                 }
-// 12. Игнорируем другие направления свайпа
                 else -> {}
             }
         }

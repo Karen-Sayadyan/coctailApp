@@ -36,6 +36,18 @@ class CocktailViewModel @Inject constructor(
     private val _cocktailState = MutableStateFlow<CocktailState>(CocktailState.LoadingButton)
     val cocktailState = _cocktailState.asStateFlow()
 
+    fun isCocktailFavorite() {
+        val cocktail = (_cocktailState.value as? CocktailState.Success)?.cocktail?.idDrink
+        viewModelScope.launch(Dispatchers.IO) {
+            cocktail?.let {
+               val updatedCocktail =  cocktailRepository.getCocktailById(it.toInt())
+                updatedCocktail?.let {
+                    _cocktailState.value = Success(it)
+                }
+            }
+        }
+    }
+
     fun addToFavorite(id: String) {
         viewModelScope.launch {
             val updatedCocktail = cocktailRepository.getCocktailById(id.toInt())
@@ -54,7 +66,6 @@ class CocktailViewModel @Inject constructor(
                         _cocktailState.value = Success(it)
                     }
                 }
-
                 null -> {}
             }
         }

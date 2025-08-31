@@ -33,6 +33,10 @@ fun CocktailScreen(
 ) {
     val state by viewModel.cocktailState.collectAsState()
     var isSwiping by remember { mutableStateOf(false) }
+
+    LaunchedEffect(Unit) {
+       viewModel.isCocktailFavorite()
+    }
     Box(
         modifier = modifier.fillMaxSize()
     ) {
@@ -74,8 +78,6 @@ fun CocktailScreen(
                         )
                     }
                 }
-
-//                 Сброс isSwiping после завершения обновления
                 LaunchedEffect(state) {
                     if (state !is CocktailViewModel.CocktailState.LoadingPullToRefresh) {
                         isSwiping = false
