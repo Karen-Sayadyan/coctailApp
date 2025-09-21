@@ -1,4 +1,4 @@
-package com.example.cocktailapp.repository
+package com.example.cocktailapp.FavoriteModule.repository
 
 import com.example.cocktailapp.cocktailModule.model.CocktailResponse
 import kotlinx.coroutines.flow.Flow

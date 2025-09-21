@@ -3,7 +3,7 @@ package com.example.cocktailapp.HistoryModule.viewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cocktailapp.cocktailModule.model.CocktailResponse
-import com.example.cocktailapp.repository.HistoryRepository
+import com.example.cocktailapp.HistoryModule.repository.HistoryRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.Dispatchers

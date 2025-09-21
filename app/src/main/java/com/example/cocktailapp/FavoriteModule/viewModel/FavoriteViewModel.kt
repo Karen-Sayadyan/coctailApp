@@ -3,7 +3,7 @@ package com.example.cocktailapp.FavoriteModule.viewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cocktailapp.cocktailModule.model.CocktailResponse
-import com.example.cocktailapp.repository.FavoriteRepository
+import com.example.cocktailapp.FavoriteModule.repository.FavoriteRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow

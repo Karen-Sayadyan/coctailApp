@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cocktailapp.cocktailModule.model.Cocktail
 import com.example.cocktailapp.cocktailModule.viewModel.CocktailViewModel.CocktailState.Success
-import com.example.cocktailapp.repository.CocktailRepository
-import com.example.cocktailapp.repository.FavoriteRepository
+import com.example.cocktailapp.cocktailModule.repository.CocktailRepository
+import com.example.cocktailapp.FavoriteModule.repository.FavoriteRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -37,7 +37,7 @@ class CocktailViewModel @Inject constructor(
     val cocktailState = _cocktailState.asStateFlow()
 
     fun isCocktailFavorite() {
-        val cocktail = (_cocktailState.value as? CocktailState.Success)?.cocktail?.idDrink
+        val cocktail = (_cocktailState.value as? Success)?.cocktail?.idDrink
         viewModelScope.launch(Dispatchers.IO) {
             cocktail?.let {
                val updatedCocktail =  cocktailRepository.getCocktailById(it.toInt())
@@ -76,7 +76,7 @@ class CocktailViewModel @Inject constructor(
                 _cocktailState.value = CocktailState.LoadingButton
                 val response = cocktailRepository.getCocktail()
                 val cocktail = response ?: return@launch
-                _cocktailState.value = CocktailState.Success(cocktail)
+                _cocktailState.value = Success(cocktail)
             } catch (e: Exception) {
                 _cocktailState.value =
                     CocktailState.Error(e.localizedMessage ?: "Unknown error")
@@ -93,7 +93,7 @@ class CocktailViewModel @Inject constructor(
                 val response = cocktailRepository.getCocktail()
                 val cocktail =
                     response ?: throw Exception("No cocktails found")
-                _cocktailState.value = CocktailState.Success(cocktail)
+                _cocktailState.value = Success(cocktail)
             } catch (e: Exception) {
                 _cocktailState.value =
                     CocktailState.Error(e.localizedMessage ?: "Unknown error")

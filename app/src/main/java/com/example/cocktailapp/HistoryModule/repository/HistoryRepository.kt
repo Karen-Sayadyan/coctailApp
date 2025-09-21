@@ -1,4 +1,4 @@
-package com.example.cocktailapp.repository
+package com.example.cocktailapp.HistoryModule.repository
 
 import com.example.cocktailapp.cocktailModule.model.CocktailResponse
 

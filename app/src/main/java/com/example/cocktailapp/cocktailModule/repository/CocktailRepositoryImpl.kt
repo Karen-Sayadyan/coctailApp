@@ -1,4 +1,4 @@
-package com.example.cocktailapp.repository
+package com.example.cocktailapp.cocktailModule.repository
 
 import com.example.cocktailapp.cocktailModule.model.Cocktail
 import com.example.cocktailapp.data.CocktailItemDao
@@ -8,7 +8,6 @@ import com.example.cocktailapp.utils.mapToBd
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
-
 
 class CocktailRepositoryImpl @Inject constructor(
     private val networkManager: NetworkModule.CocktailApiService,
