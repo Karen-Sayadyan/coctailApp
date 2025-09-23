@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <style name="Theme.CocktailApp" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.CocktailApp.Starting" parent="@style/Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/white</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/animated_logo</item>
+        <item name="postSplashScreenTheme">@style/Theme.CocktailApp</item>
+    </style>
 </resources>
+

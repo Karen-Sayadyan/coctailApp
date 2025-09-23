@@ -1,8 +1,7 @@
-package com.example.cocktailapp.data
+package com.example.cocktailapp.data.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-
 
 @Entity(tableName = "cocktails")
 data class CocktailItem(
@@ -11,5 +10,6 @@ data class CocktailItem(
     val strAlcoholic: String?,
     val strInstructions: String?,
     val image: String?,
-    val isFavorite: Boolean
+    val isFavorite: Boolean,
+    val strCategory: String?
 )

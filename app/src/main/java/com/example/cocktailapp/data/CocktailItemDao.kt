@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
+import com.example.cocktailapp.data.entity.CocktailItem
 import kotlinx.coroutines.flow.Flow
 
 
@@ -21,7 +22,7 @@ interface CocktailItemDao {
     suspend fun delete(cocktailItem: CocktailItem)
 
     @Query("SELECT * from cocktails WHERE idDrink = :id")
-    fun getCocktailById(id: Int): CocktailItem?
+    fun getCocktailById(id: Int): CocktailItem
 
     @Query("SELECT * from cocktails")
     fun getAllCocktailItems(): List<CocktailItem>
@@ -33,5 +34,5 @@ interface CocktailItemDao {
     suspend fun removeFromFavorite(id: Int) : Int
 
     @Query("SELECT * from cocktails WHERE isFavorite = 1 ")
-    fun getAllFavorites(): Flow<List<CocktailItem?>>
+    fun getAllFavorites(): Flow<List<CocktailItem>>
 }

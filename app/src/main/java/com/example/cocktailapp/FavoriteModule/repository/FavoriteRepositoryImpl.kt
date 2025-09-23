@@ -20,7 +20,7 @@ class FavoriteRepositoryImpl @Inject constructor(
 
     override fun getAllFavorites(): Flow<CocktailResponse> {
         return dao.getAllFavorites().map { listFromDb ->
-            val responseCocktails = listFromDb.mapNotNull { it?.mapFromBd() }
+            val responseCocktails = listFromDb.map { it.mapFromBd() }
             CocktailResponse(responseCocktails)
         }
     }
