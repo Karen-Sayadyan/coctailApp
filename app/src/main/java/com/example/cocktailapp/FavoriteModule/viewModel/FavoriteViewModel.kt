@@ -23,7 +23,7 @@ class FavoriteViewModel @Inject constructor(
         object Loading : CocktailState()
         object Empty : CocktailState()
         data class Success(val cocktails: CocktailResponse) : CocktailState()
-        data class Error(val message: String) : CocktailState() // Добавим состояние ошибки
+        data class Error(val message: String) : CocktailState()
     }
 
     private val _cocktailState = MutableStateFlow<CocktailState>(CocktailState.Loading)

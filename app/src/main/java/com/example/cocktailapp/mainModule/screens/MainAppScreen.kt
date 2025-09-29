@@ -3,6 +3,7 @@ package com.example.cocktailapp.mainModule.screens
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.List
@@ -16,6 +17,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
+import com.example.cocktailapp.DetailModule.screens.DetailScreen
 import com.example.cocktailapp.FavoriteModule.screens.FavoriteScreen
 import com.example.cocktailapp.FavoriteModule.viewModel.FavoriteViewModel
 import com.example.cocktailapp.HistoryModule.screens.HistoryScreen
@@ -48,7 +50,7 @@ fun MainAppScreen(root: RootComponent, viewModel: CocktailViewModel, historyView
                 NavigationBarItem(
                     selected = currentChild.configuration == RootComponent.Configuration.HistoryScreen,
                     onClick = { root.onTabSelected(RootComponent.Configuration.HistoryScreen) },
-                    icon = { Icon(Icons.Default.List, "History") },
+                    icon = { Icon(Icons.AutoMirrored.Filled.List, "History") },
                     label = { Text("History") }
                 )
                 NavigationBarItem(
@@ -68,8 +70,11 @@ fun MainAppScreen(root: RootComponent, viewModel: CocktailViewModel, historyView
                     HistoryScreen(child.component, historyViewModel)
                 is RootComponent.Child.FavoriteScreen ->
                     FavoriteScreen(child.component, viewModel = favoriteViewModel)
+                is RootComponent.Child.DetailsScreen ->
+                    DetailScreen(
+                        component = child.component,
+                    )
                 else -> {
-// Fallback на случай ошибки
                     root.onTabSelected(RootComponent.Configuration.CocktailScreen)
                 }
             }

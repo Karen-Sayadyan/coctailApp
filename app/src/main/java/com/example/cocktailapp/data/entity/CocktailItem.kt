@@ -11,5 +11,7 @@ data class CocktailItem(
     val strInstructions: String?,
     val image: String?,
     val isFavorite: Boolean,
-    val strCategory: String?
+    val strCategory: String?,
+    val strGlass: String? // новое поле
 )
+

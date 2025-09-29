@@ -57,7 +57,10 @@ fun FavoriteScreen(
                         onRemove = { viewModel.deleteCocktailFromFavorites(it) },
                         modifier = Modifier
                             .weight(1f)
-                            .padding(bottom = 16.dp)
+                            .padding(bottom = 16.dp),
+                        onClick = {
+                            component.onClickToDetail(it)
+                        }
                     )
                 }
 

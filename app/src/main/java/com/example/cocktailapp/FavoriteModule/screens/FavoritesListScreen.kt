@@ -1,6 +1,7 @@
 package com.example.cocktailapp.FavoriteModule.screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -40,12 +41,17 @@ import com.example.cocktailapp.cocktailModule.model.Cocktail
 fun FavoritesListScreen(
     cocktails: List<Cocktail>,
     modifier: Modifier = Modifier,
-    onRemove: (String?) -> Unit
+    onRemove: (String?) -> Unit,
+    onClick: (String?) -> Unit
 ) {
     LazyColumn(modifier = modifier) {
         items(cocktails) { cocktail ->
             FavoriteItem(cocktail = cocktail,
-                onRemove = { onRemove(cocktail.idDrink) })
+                onRemove = { onRemove(cocktail.idDrink) },
+                onClick = {
+                    onClick(cocktail.idDrink)
+                }
+            )
         }
     }
 }
@@ -55,7 +61,8 @@ fun FavoritesListScreen(
 fun FavoriteItem(
     cocktail: Cocktail,
     onRemove: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClick: (String?) -> Unit
 ) {
     val swipeToDismissBoxState = rememberSwipeToDismissBoxState(
         confirmValueChange = { dismissDirection ->
@@ -67,7 +74,9 @@ fun FavoriteItem(
     )
     SwipeToDismissBox(
         state = swipeToDismissBoxState,
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize().clickable{
+            onClick(cocktail.idDrink)
+        },
         backgroundContent = {
             when (swipeToDismissBoxState.dismissDirection) {
                 SwipeToDismissBoxValue.EndToStart -> {

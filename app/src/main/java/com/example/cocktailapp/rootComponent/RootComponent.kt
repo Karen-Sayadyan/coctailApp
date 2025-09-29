@@ -1,5 +1,6 @@
 package com.example.cocktailapp.rootComponent
 
+import DetailComponent
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.bringToFront
@@ -9,6 +10,7 @@ import com.arkivanov.decompose.router.stack.pushNew
 import com.example.cocktailapp.FavoriteModule.component.FavoriteComponent
 import com.example.cocktailapp.HistoryModule.component.HistoryComponent
 import com.example.cocktailapp.cocktailModule.component.CocktailComponent
+import com.example.cocktailapp.rootComponent.RootComponent.Child.*
 import kotlinx.serialization.Serializable
 
 class RootComponent(
@@ -32,13 +34,16 @@ class RootComponent(
         context: ComponentContext
     ): Child {
         return when (config) {
-            Configuration.FavoriteScreen -> Child.FavoriteScreen(
+            Configuration.FavoriteScreen -> FavoriteScreen(
                 component = FavoriteComponent(
-                    context
+                    context,
+                    onClickToDetail = {
+                        it?.let { detailString -> navigation.bringToFront(Configuration.DetailsScreen(detailString)) }
+                    }
                 )
             )
 
-            Configuration.CocktailScreen -> Child.CocktailScreen(
+            Configuration.CocktailScreen -> CocktailScreen(
                 component = CocktailComponent(
                     context,
                     onGoback = {
@@ -47,7 +52,7 @@ class RootComponent(
                 )
             )
 
-            Configuration.HistoryScreen -> Child.HistoryScreen(
+            Configuration.HistoryScreen -> HistoryScreen(
                 component = HistoryComponent(
                     context,
                     onGoback = {
@@ -56,6 +61,13 @@ class RootComponent(
                     onCocktailNavigation = {
                         navigation.pushNew(Configuration.CocktailScreen)
                     }
+                )
+            )
+
+            is Configuration.DetailsScreen -> DetailsScreen(
+                component = DetailComponent(
+                    componentContext = context,
+                    cocktailId = config.id
                 )
             )
         }
@@ -71,6 +83,8 @@ class RootComponent(
 
         class FavoriteScreen(val component: FavoriteComponent) : Child()
 
+        class DetailsScreen(val component: DetailComponent) : Child()
+
 
     }
 
@@ -84,6 +98,10 @@ class RootComponent(
 
         @Serializable
         data object FavoriteScreen : Configuration()
+
+        @Serializable
+        data class DetailsScreen(val id: String) : Configuration()
+
     }
 
 }

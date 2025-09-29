@@ -4,9 +4,10 @@ import com.arkivanov.decompose.ComponentContext
 
 
 class FavoriteComponent(
-    componentContext: ComponentContext
-
+    componentContext: ComponentContext,
+    val onClickToDetail: (String?) -> Unit
 ) : ComponentContext by componentContext {
-
-
+    fun onItemClicked(id: String) {
+        onClickToDetail(id)
+    }
 }
