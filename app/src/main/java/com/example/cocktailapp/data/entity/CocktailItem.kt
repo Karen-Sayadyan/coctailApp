@@ -12,6 +12,7 @@ data class CocktailItem(
     val image: String?,
     val isFavorite: Boolean,
     val strCategory: String?,
-    val strGlass: String? // новое поле
+    val strGlass: String?,
+    val favLoadedDate: Long?
 )
 

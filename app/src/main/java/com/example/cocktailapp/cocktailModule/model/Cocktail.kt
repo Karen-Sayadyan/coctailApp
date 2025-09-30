@@ -23,7 +23,8 @@ data class Cocktail(
     val strInstructionsZH_HANS: String? = null,
     val strInstructionsZH_HANT: String? = null,
     val strDrinkThumb: String? = null,
-    val ingredients: List<Ingredient>? = null
+    val ingredients: List<Ingredient>? = null,
+    val favLoadedDate: Long? = null
 )
 
 data class Ingredient(

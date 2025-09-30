@@ -12,7 +12,8 @@ fun Cocktail.mapToBd(): CocktailItem {
         image = this.strDrinkThumb,
         isFavorite = false,
         strCategory = this.strCategory,
-        strGlass = this.strGlass
+        strGlass = this.strGlass,
+        favLoadedDate = System.currentTimeMillis()
     )
 }
 
@@ -25,6 +26,7 @@ fun CocktailItem.mapFromBd() : Cocktail {
         strDrinkThumb = this.image,
         isFavorite = this.isFavorite,
         strCategory = this.strCategory,
-        strGlass = this.strGlass
+        strGlass = this.strGlass,
+        favLoadedDate = this.favLoadedDate
     )
 }

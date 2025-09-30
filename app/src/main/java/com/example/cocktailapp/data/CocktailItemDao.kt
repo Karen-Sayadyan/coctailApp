@@ -9,7 +9,6 @@ import androidx.room.Update
 import com.example.cocktailapp.data.entity.CocktailItem
 import kotlinx.coroutines.flow.Flow
 
-
 @Dao
 interface CocktailItemDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
@@ -27,12 +26,12 @@ interface CocktailItemDao {
     @Query("SELECT * from cocktails")
     fun getAllCocktailItems(): List<CocktailItem>
 
-    @Query("UPDATE cocktails SET isFavorite = 1 WHERE idDrink = :id")
-    suspend fun adToFavorite(id: Int) : Int
+    @Query("UPDATE cocktails SET isFavorite = 1, favLoadedDate = :timestamp WHERE idDrink = :id")
+    suspend fun adToFavorite(id: Int, timestamp: Long) : Int
 
-    @Query("UPDATE cocktails SET isFavorite = 0 WHERE idDrink = :id")
+    @Query("UPDATE cocktails SET isFavorite = 0, favLoadedDate = NULL WHERE idDrink = :id")
     suspend fun removeFromFavorite(id: Int) : Int
 
-    @Query("SELECT * from cocktails WHERE isFavorite = 1 ")
+    @Query("SELECT * from cocktails WHERE isFavorite = 1 ORDER BY favLoadedDate DESC")
     fun getAllFavorites(): Flow<List<CocktailItem>>
 }

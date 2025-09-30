@@ -67,7 +67,10 @@ class RootComponent(
             is Configuration.DetailsScreen -> DetailsScreen(
                 component = DetailComponent(
                     componentContext = context,
-                    cocktailId = config.id
+                    cocktailId = config.id,
+                    goBack = {
+                        navigation.pop()
+                    }
                 )
             )
         }

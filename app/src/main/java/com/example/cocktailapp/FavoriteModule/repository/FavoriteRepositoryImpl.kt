@@ -11,7 +11,8 @@ class FavoriteRepositoryImpl @Inject constructor(
     private val dao: CocktailItemDao
 ) : FavoriteRepository {
     override suspend fun addToFavorite(id: Int): Boolean {
-        return dao.adToFavorite(id) > 0
+        val timestamp = System.currentTimeMillis()
+        return dao.adToFavorite(id, timestamp) > 0
     }
 
     override suspend fun removeFromFavorite(id: Int): Boolean {
