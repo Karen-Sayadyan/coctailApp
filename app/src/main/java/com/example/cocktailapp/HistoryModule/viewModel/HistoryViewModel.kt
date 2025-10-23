@@ -3,7 +3,7 @@ package com.example.cocktailapp.HistoryModule.viewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cocktailapp.cocktailModule.model.CocktailResponse
-import com.example.cocktailapp.repository.CocktailsHistoryRepository
+import com.example.cocktailapp.HistoryModule.repository.HistoryRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.Dispatchers
@@ -12,10 +12,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-
 @HiltViewModel
 class HistoryViewModel @Inject constructor(
-    private val cocktailRepository: CocktailsHistoryRepository,
+    private val cocktailRepository: HistoryRepository,
 ) : ViewModel() {
 
     sealed class CocktailState {

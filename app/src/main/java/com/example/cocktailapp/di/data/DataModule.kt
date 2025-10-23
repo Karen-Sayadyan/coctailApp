@@ -4,6 +4,9 @@ import android.content.Context
 import androidx.room.Room
 import com.example.cocktailapp.data.CocktailItemDao
 import com.example.cocktailapp.data.CocktailDatabase
+import com.example.cocktailapp.data.migration.MIGRATION_1_2
+import com.example.cocktailapp.data.migration.MIGRATION_2_3
+import com.example.cocktailapp.data.migration.MIGRATION_3_4
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,7 +24,8 @@ object DataModule {
             context,
             CocktailDatabase::class.java,
             "cocktail_database"
-        ).build()
+        ).addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4)
+            .build()
     }
 
     @Provides

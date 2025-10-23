@@ -5,22 +5,22 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.cocktailapp.cocktailModule.events.CocktailEvents
 import com.example.cocktailapp.cocktailModule.component.CocktailComponent
 import com.example.cocktailapp.cocktailModule.viewModel.CocktailViewModel
 
@@ -35,9 +35,8 @@ fun CocktailScreen(
     var isSwiping by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
-        viewModel.loadCocktail()
+       viewModel.isCocktailFavorite()
     }
-
     Box(
         modifier = modifier.fillMaxSize()
     ) {
@@ -54,14 +53,6 @@ fun CocktailScreen(
                     .fillMaxSize()
                     .padding(bottom = 80.dp)
             ) {
-                IconButton(
-                    onClick = {
-                        component.toLandingScreen(event = CocktailEvents.BackToLanding)
-                    },
-                    modifier = Modifier.padding(12.dp)
-                ) {
-                    Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
-                }
 
                 when (state) {
 
@@ -80,12 +71,13 @@ fun CocktailScreen(
                     is CocktailViewModel.CocktailState.Success -> {
                         val cocktail = (state as CocktailViewModel.CocktailState.Success).cocktail
                         SuccessCard(
-                            cocktail = cocktail
+                            cocktail = cocktail,
+                            onClick = { id ->
+                                id?.let {viewModel.addToFavorite(it) }
+                            }
                         )
                     }
                 }
-
-//                 Сброс isSwiping после завершения обновления
                 LaunchedEffect(state) {
                     if (state !is CocktailViewModel.CocktailState.LoadingPullToRefresh) {
                         isSwiping = false
@@ -126,7 +118,6 @@ fun SearchButton(
             contentColor = if (isLoading) MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
             else MaterialTheme.colorScheme.onPrimary
         ),
-        shape = RoundedCornerShape(12.dp),
         enabled = !isLoading
     ) {
         Text(

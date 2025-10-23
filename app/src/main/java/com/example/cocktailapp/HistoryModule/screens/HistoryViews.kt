@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CardDefaults.cardElevation
@@ -32,7 +31,10 @@ import com.example.cocktailapp.appMaterialTheme.MyAppTypography
 import com.example.cocktailapp.cocktailModule.model.Cocktail
 
 @Composable
-fun HistoryListScreen(cocktails: List<Cocktail>, modifier: Modifier = Modifier) {
+fun HistoryListScreen(
+    cocktails: List<Cocktail>,
+    modifier: Modifier = Modifier,
+) {
     LazyColumn(modifier = modifier) {
         items(cocktails) { cocktail ->
             HistoryItem(cocktail = cocktail)
@@ -90,26 +92,7 @@ fun LoadingScreen() {
         contentAlignment = Alignment.Center
     ) {
         CircularProgressIndicator(
-            color = MaterialTheme.colorScheme.primary
-        )
-    }
-}
-
-@Composable
-fun SearchButton(
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Button(
-        onClick = onClick,
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(horizontal = 30.dp),
-        shape = RoundedCornerShape(12.dp),
-    ) {
-        Text(
-            text = "Получить случайный коктейль",
-            style = MaterialTheme.typography.labelLarge
+            color = colorScheme.primary
         )
     }
 }

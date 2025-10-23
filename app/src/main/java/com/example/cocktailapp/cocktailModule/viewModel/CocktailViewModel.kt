@@ -3,7 +3,9 @@ package com.example.cocktailapp.cocktailModule.viewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cocktailapp.cocktailModule.model.Cocktail
-import com.example.cocktailapp.repository.CocktailRepository
+import com.example.cocktailapp.cocktailModule.viewModel.CocktailViewModel.CocktailState.Success
+import com.example.cocktailapp.cocktailModule.repository.CocktailRepository
+import com.example.cocktailapp.FavoriteModule.repository.FavoriteRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -16,7 +18,13 @@ import javax.inject.Inject
 @HiltViewModel
 class CocktailViewModel @Inject constructor(
     private val cocktailRepository: CocktailRepository,
-) : ViewModel() {
+    private val favoriteRepository: FavoriteRepository,
+
+    ) : ViewModel() {
+
+    init {
+        loadCocktail()
+    }
 
     sealed class CocktailState {
         object LoadingButton : CocktailState() // Состояние для загрузки по кнопке
@@ -28,17 +36,50 @@ class CocktailViewModel @Inject constructor(
     private val _cocktailState = MutableStateFlow<CocktailState>(CocktailState.LoadingButton)
     val cocktailState = _cocktailState.asStateFlow()
 
+    fun isCocktailFavorite() {
+        val cocktail = (_cocktailState.value as? Success)?.cocktail?.idDrink
+        viewModelScope.launch(Dispatchers.IO) {
+            cocktail?.let {
+               val updatedCocktail =  cocktailRepository.getCocktailById(it.toInt())
+                updatedCocktail?.let {
+                    _cocktailState.value = Success(it)
+                }
+            }
+        }
+    }
+
+    fun addToFavorite(id: String) {
+        viewModelScope.launch {
+            val updatedCocktail = cocktailRepository.getCocktailById(id.toInt())
+            when (updatedCocktail?.isFavorite) {
+                true -> {
+                    favoriteRepository.removeFromFavorite(id.toInt())
+                    val result = cocktailRepository.getCocktailById(id.toInt())
+                    result?.let {
+                        _cocktailState.value = Success(it)
+                    }
+                }
+                false -> {
+                    favoriteRepository.addToFavorite(id.toInt())
+                    val result = cocktailRepository.getCocktailById(id.toInt())
+                    result?.let {
+                        _cocktailState.value = Success(it)
+                    }
+                }
+                null -> {}
+            }
+        }
+    }
     fun loadCocktail() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 _cocktailState.value = CocktailState.LoadingButton
-                delay(1000) // Задержка для демонстрации
                 val response = cocktailRepository.getCocktail()
-                val cocktail =
-                    response ?: throw Exception("No cocktails found")
-                _cocktailState.value = CocktailState.Success(cocktail)
+                val cocktail = response ?: return@launch
+                _cocktailState.value = Success(cocktail)
             } catch (e: Exception) {
-                _cocktailState.value = CocktailState.Error(e.localizedMessage ?: "Unknown error")
+                _cocktailState.value =
+                    CocktailState.Error(e.localizedMessage ?: "Unknown error")
             }
         }
     }
@@ -52,9 +93,10 @@ class CocktailViewModel @Inject constructor(
                 val response = cocktailRepository.getCocktail()
                 val cocktail =
                     response ?: throw Exception("No cocktails found")
-                _cocktailState.value = CocktailState.Success(cocktail)
+                _cocktailState.value = Success(cocktail)
             } catch (e: Exception) {
-                _cocktailState.value = CocktailState.Error(e.localizedMessage ?: "Unknown error")
+                _cocktailState.value =
+                    CocktailState.Error(e.localizedMessage ?: "Unknown error")
             }
         }
     }

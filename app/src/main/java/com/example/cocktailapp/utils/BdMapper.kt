@@ -1,7 +1,7 @@
 package com.example.cocktailapp.utils
 
 import com.example.cocktailapp.cocktailModule.model.Cocktail
-import com.example.cocktailapp.data.CocktailItem
+import com.example.cocktailapp.data.entity.CocktailItem
 
 fun Cocktail.mapToBd(): CocktailItem {
     return CocktailItem(
@@ -9,7 +9,11 @@ fun Cocktail.mapToBd(): CocktailItem {
         strDrink = this.strDrink,
         strAlcoholic = this.strAlcoholic,
         strInstructions = this.strInstructions,
-        image = this.strDrinkThumb
+        image = this.strDrinkThumb,
+        isFavorite = false,
+        strCategory = this.strCategory,
+        strGlass = this.strGlass,
+        favLoadedDate = System.currentTimeMillis()
     )
 }
 
@@ -19,6 +23,10 @@ fun CocktailItem.mapFromBd() : Cocktail {
         strDrink = this.strDrink,
         strAlcoholic = this.strAlcoholic,
         strInstructions = this.strInstructions,
-        strDrinkThumb = this.image
+        strDrinkThumb = this.image,
+        isFavorite = this.isFavorite,
+        strCategory = this.strCategory,
+        strGlass = this.strGlass,
+        favLoadedDate = this.favLoadedDate
     )
 }

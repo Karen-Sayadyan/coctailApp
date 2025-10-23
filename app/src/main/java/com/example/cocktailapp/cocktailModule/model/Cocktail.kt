@@ -6,6 +6,7 @@ data class CocktailResponse(
 
 data class Cocktail(
     val idDrink: String? = null,
+    val isFavorite: Boolean = false,
     val strDrink: String? = null,
     val strDrinkAlternate: String? = null,
     val strTags: String? = null,
@@ -22,7 +23,8 @@ data class Cocktail(
     val strInstructionsZH_HANS: String? = null,
     val strInstructionsZH_HANT: String? = null,
     val strDrinkThumb: String? = null,
-    val ingredients: List<Ingredient>? = null
+    val ingredients: List<Ingredient>? = null,
+    val favLoadedDate: Long? = null
 )
 
 data class Ingredient(
